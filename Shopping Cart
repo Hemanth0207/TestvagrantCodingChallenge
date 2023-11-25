@@ -1,0 +1,54 @@
+class product{
+    String name;
+    int unit;
+    int gst;
+    int quantity;
+
+    public product(String name,int unit,int gst,int quantity){
+        this.name = name;
+        this.unit = unit;
+        this.gst = gst;
+        this.quantity = quantity;
+    }
+}
+
+public class shoppingcart {
+    public static void main(String args[]){
+        product leatherwallet = new product("Leather wallet",110,18,1);
+        product umbrella = new product("Umbrella",900,12,4);
+        product cigarette = new product("Cigarette",200,28,3);
+        product honey = new product("Honey", 100, 0,2);
+
+        product max = maxgst(leatherwallet, umbrella, cigarette, honey);
+        System.out.println("Product that has max GST maount"+max.name);
+
+        int totalamount = calculatetotalamount(leatherwallet, umbrella, cigarette, honey);
+        System.out.println("The total amount to be paid Rs"+totalamount);
+    }
+    private static product maxgst(product... products){
+        product maxproduct = null;
+        double maxamount = 0;
+
+        for (product product : products) {
+            double gstamount = (product.unit * product.gst) / 100.0;
+            if (gstamount > maxamount) {
+                maxamount = gstamount;
+                maxproduct = product;
+            }
+        }
+
+        return maxproduct;
+    }
+    private static int calculatetotalamount(product... products) {
+        int totalamount = 0;
+
+        for (product product : products) {
+            double gstAmount = (product.unit * product.gst) / 100.0;
+            double discountedPrice = product.unit - (product.unit >= 500 ? 0.05 * product.unit : 0);
+            totalamount += (discountedPrice + gstAmount) * product.quantity;
+        }
+
+        return totalamount;
+    }
+
+}
